@@ -5,8 +5,11 @@ from datetime import datetime
 
 fake = Faker(['fr_FR'])
 
+HOST = "127.0.0.1"
+PASSWORD = "02022007"
+
 # --- CONFIGURATION ---
-NB_TENRACS = 10 # Ajustez pour atteindre le million total cumulé
+NB_TENRACS = 10_000 # Ajustez pour atteindre le million total cumulé
 NB_REPAS = 10
 NB_MACHINES = 10
 
@@ -59,7 +62,7 @@ def generate_data():
             random.choice(rangs)[0] if random.random() > 0.5 else None,
             grade,
             random.choice(titres)[0] if random.random() > 0.7 else None,
-            siret, idO
+            None, None
         ))
         
         if grade in ['Chevalier', 'Grand Chevalier']:
@@ -71,6 +74,7 @@ def generate_data():
     repas = []
     for i in range(1, NB_REPAS + 1):
         repas.append((
+            i,
             f"R-{i}", f"Festin {fake.word()}", 
             fake.date_time_between(start_date='-2y', end_date='now').strftime('%Y-%m-%d %H:%M:%S'),
             random.randint(1, 4999)
@@ -90,69 +94,66 @@ def generate_data():
 
     print(f"Génération terminée : {NB_TENRACS} Tenracs créés.")
     
-    # --- INSERTION OU EXPORT ---
-    # Ici vous pouvez utiliser cursor.executemany() pour insérer dans votre DB
-    # Ou écrire dans un fichier .sql
-    with oracledb.connect(user="SYSTEM", password="02022007", host="127.0.0.1") as connection:
-        drop_tables(connection)
-        insert_tenrac(tenracs, connection)
-        insert_territoire(territoires, connection)
+    drop_tables()
+
+    with oracledb.connect(user="SYSTEM", password=PASSWORD, host=HOST) as connection:
+        insert(territoires, connection, "Territoire", "insert into Territoire values (:1, :2)")
+        insert(organismes, connection, "Organisme Associe", "insert into Organisme_associe values (:1, :2)")
+        insert(adresses, connection, "Adresse", "insert into Adresse values (:1, :2)")
+        insert(organisations, connection, "Organisation", "insert into Organisation values (:1, :2, :3, :4)")
+        insert(dignites, connection, "Dignite", "insert into Dignite values (:1, :2)")
+        insert(rangs, connection, "Rang", "insert into Rang values (:1, :2)")
+        insert(grades, connection, "Grade", "insert into Grade values (:1, :2)")
+        insert(titres, connection, "Titre", "insert into Titre values (:1, :2)")
+        insert(tenracs, connection, "Tenracs", "insert into Tenrac values (:1, :2, :3, :4, :5, :6, :7, :8, :9, :10, :11, :12)")
         connection.commit()
 
-def drop_tables(connection):
-
+def drop_tables():
     intention = open("intention.sql", "r")
     intentionSQL = intention.read()
     intentionSQL = intentionSQL.split(";")
 
+    with oracledb.connect(user="SYSTEM", password=PASSWORD, host=HOST) as connection:
+
+        with connection.cursor() as cursor:
+                cursor.execute("drop table GRADE cascade constraints")
+                cursor.execute("drop table RANG cascade constraints")
+                cursor.execute("drop table TITRE cascade constraints")
+                cursor.execute("drop table DIGNITE cascade constraints")
+                cursor.execute("drop table ORGANISME_ASSOCIE cascade constraints")
+                cursor.execute("drop table PLAT cascade constraints")
+                cursor.execute("drop table INGREDIENT cascade constraints")
+                cursor.execute("drop table SAUCE cascade constraints")
+                cursor.execute("drop table MACHINE cascade constraints")
+                cursor.execute("drop table TERRITOIRE cascade constraints")
+                cursor.execute("drop table MODELE cascade constraints")
+                cursor.execute("drop table ENTRETIEN cascade constraints")
+                cursor.execute("drop table ADRESSE cascade constraints")
+                cursor.execute("drop table REPAS cascade constraints")
+                cursor.execute("drop table ORGANISATION cascade constraints")
+                cursor.execute("drop table TENRAC cascade constraints")
+                cursor.execute("drop table ORDRE_DES_TENRACS cascade constraints")
+                cursor.execute("drop table CLUB_TENRAC cascade constraints")
+                cursor.execute("drop table EST_CREATEUR cascade constraints")
+                cursor.execute("drop table PARTICIPE cascade constraints")
+                cursor.execute("drop table COMBINEIS cascade constraints")
+                cursor.execute("drop table CONTIENT cascade constraints")
+                cursor.execute("drop table EST_ASSOCIE cascade constraints")
+                cursor.execute("drop table UTILISE cascade constraints")
+                cursor.execute("drop table ASSOCIE cascade constraints")
+                cursor.execute("drop table HISTORIQUE_ENTRETIEN cascade constraints")
+                cursor.execute("drop table COMBINESP cascade constraints")
+                cursor.execute("drop table COMBINEIP cascade constraints")
+                cursor.execute("drop table ADRESSE_PARTENAIRE cascade constraints")
+                for table in intentionSQL[0:len(intentionSQL)-1]:
+                    cursor.execute(table)
+        print("Drop all tables succeed")
+
+def insert(data, connection, table, sql):
     with connection.cursor() as cursor:
-            cursor.execute("drop table GRADE cascade constraints")
-            cursor.execute("drop table RANG cascade constraints")
-            cursor.execute("drop table TITRE cascade constraints")
-            cursor.execute("drop table DIGNITE cascade constraints")
-            cursor.execute("drop table ORGANISME_ASSOCIE cascade constraints")
-            cursor.execute("drop table PLAT cascade constraints")
-            cursor.execute("drop table INGREDIENT cascade constraints")
-            cursor.execute("drop table SAUCE cascade constraints")
-            cursor.execute("drop table MACHINE cascade constraints")
-            cursor.execute("drop table TERRITOIRE cascade constraints")
-            cursor.execute("drop table MODELE cascade constraints")
-            cursor.execute("drop table ENTRETIEN cascade constraints")
-            cursor.execute("drop table ADRESSE cascade constraints")
-            cursor.execute("drop table REPAS cascade constraints")
-            cursor.execute("drop table ORGANISATION cascade constraints")
-            cursor.execute("drop table TENRAC cascade constraints")
-            cursor.execute("drop table ORDRE_DES_TENRACS cascade constraints")
-            cursor.execute("drop table CLUB_TENRAC cascade constraints")
-            cursor.execute("drop table EST_CREATEUR cascade constraints")
-            cursor.execute("drop table PARTICIPE cascade constraints")
-            cursor.execute("drop table COMBINEIS cascade constraints")
-            cursor.execute("drop table CONTIENT cascade constraints")
-            cursor.execute("drop table EST_ASSOCIE cascade constraints")
-            cursor.execute("drop table UTILISE cascade constraints")
-            cursor.execute("drop table ASSOCIE cascade constraints")
-            cursor.execute("drop table HISTORIQUE_ENTRETIEN cascade constraints")
-            cursor.execute("drop table COMBINESP cascade constraints")
-            cursor.execute("drop table COMBINEIP cascade constraints")
-            cursor.execute("drop table ADRESSE_PARTENAIRE cascade constraints")
-            for table in intentionSQL[0:len(intentionSQL)-1]:
-                cursor.execute(table)
-    print("Drop all tables succeed")
-
-def insert_tenrac(data, connection):
-    for tenrac in data:
-        with connection.cursor() as cursor:
-            cursor.execute("insert into TENRAC values (:1, :2, :3, :4, :5, :6, :7, :8, :9, :10, :11, :12)", 
-                        (tenrac[0], tenrac[1], tenrac[2], tenrac[3], tenrac[4], tenrac[5], None, None, None,
-                        None, None, None))
-    print("Finished Tenrac")
-
-def insert_territoire(data, connection):
-    for territoire in data:
-        with connection.cursor() as cursor:
-            cursor.execute("insert into TERRITOIRE values (:1, :2)", 
-                        (territoire[0], territoire[1]))
-    print("Finished Territoire")
+        cursor.executemany(sql, 
+                    data)
+    print("Finished " + table)
 
 if __name__ == "__main__":
     generate_data()
