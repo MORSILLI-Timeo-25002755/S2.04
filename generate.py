@@ -44,7 +44,7 @@ def generate_data() -> tuple:
     # 3. Organisations, Ordre et Clubs
     organisations = []
     for i in range(1, 5):
-        organisations.append((i, f"L'Ordre du Tenrac {fake.name().replace("'", '')}", "Ordre", random.randint(1, 100)))
+        organisations.append((i, f"L Ordre du Tenrac {fake.name().replace("'", '')}", "Ordre", random.randint(1, 100)))
     for i in range(6, 201):
         organisations.append((i, f"Club Tenrac {fake.city().replace("'", '')}", "Club", random.randint(1, 100)))
 
