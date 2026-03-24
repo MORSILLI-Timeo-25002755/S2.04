@@ -1,0 +1,7 @@
+insert into Grade values ('Affilié', 1)
+insert into Grade values ('Sympathisant', 2)
+insert into Grade values ('Adhérent', 3)
+insert into Grade values ('Chevalier', 4)
+insert into Grade values ('Grand Chevalier', 5)
+insert into Grade values ('Commandeur', 6)
+insert into Grade values ('Grand Croix', 7)

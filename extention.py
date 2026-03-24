@@ -42,6 +42,8 @@ def generate_data():
     for i in range(2, 201):
         organisations.append((i, f"Club Tenrac {fake.city()}", "Club", random.randint(1, 100)))
 
+    ordres = [(element[0],) for element in organisations if element[2] == "Ordre"]
+
     # 4. Tenracs (Le gros volume)
     tenracs = []
     chevaliers_ids = [] # Utile pour les repas
@@ -113,6 +115,7 @@ def generate_data():
         insert(machines, connection, "Machine", "insert into Machine values (:1, :2)")
         insert(historique_entretiens, connection, "Historique Entretien", "insert into Historique_Entretien values (:1, :2, :3, :4)")
         insert(modeles, connection, "Modele", "insert into Modele values (:1, :2)")
+        insert(ordres, connection, "Ordre des Tenracs", "insert into Ordre_des_tenracs values (:1)")
         #insert(ingredients, connection, "Ingredient", "insert into Ingredient values (:1, :2)")
         #insert(sauces, connection, "Sauce", "insert into Sauce values (:1, :2)")
         #insert(plats, connection, "Plat", "insert into Plat values (:1, :2, :3)")
