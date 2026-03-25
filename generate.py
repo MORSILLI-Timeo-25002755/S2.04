@@ -17,6 +17,10 @@ USER = ""
 NB_TENRACS = 10 # Ajustez pour atteindre le million total cumulé
 NB_REPAS = 100
 NB_MACHINES = 600
+NB_TERRITOIRE = 10
+NB_ORGANISME_ASSOCIE = 100
+NB_ADRESSE = 2
+NB_PARTICIPE = 10
 
 def generate_data() -> tuple:
     # Listes de constantes pour la cohérence métier
@@ -37,16 +41,16 @@ def generate_data() -> tuple:
     # On génère ici les Grades, Rangs, etc.
     
     # 2. Organismes et Territoires
-    territoires = [(i, fake.region()) for i in range(1, 101)]
-    organismes = [(fake.siret(), fake.company()) for _ in range(500)]
-    adresses = [(i, fake.address().replace('\n', ' ')) for i in range(1, 5000)]
+    territoires = [(i, fake.region().replace("'", ' ')) for i in range(1, NB_TERRITOIRE + 1)]
+    organismes = [(fake.siret().replace("'", ' '), fake.company().replace("'", ' ')) for _ in range(NB_ORGANISME_ASSOCIE)]
+    adresses = [(i, fake.address().replace('\n', ' ')) for i in range(1, NB_ADRESSE + 1)]
 
     # 3. Organisations, Ordre et Clubs
     organisations = []
     for i in range(1, 5):
-        organisations.append((i, f"L Ordre du Tenrac {fake.name().replace("'", '')}", "Ordre", random.randint(1, 100)))
+        organisations.append((i, f"L Ordre du Tenrac {fake.name().replace("'", ' ')}", "Ordre", random.randint(1, NB_TERRITOIRE)))
     for i in range(6, 201):
-        organisations.append((i, f"Club Tenrac {fake.city().replace("'", '')}", "Club", random.randint(1, 100)))
+        organisations.append((i, f"Club Tenrac {fake.city().replace("'", ' ')}", "Club", random.randint(1, NB_TERRITOIRE)))
 
     ordres = [(element[0],) for element in organisations if element[2] == "Ordre"]
     club = [(element[0], random.randrange(1, 5)) for element in organisations if element[2] == "Club"]
@@ -72,8 +76,8 @@ def generate_data() -> tuple:
         idO = random.randint(1, 200)
 
         tenracs.append((
-            i, fake.name().replace("'", ''), fake.email().replace("'", ''), fake.phone_number().replace("'", ''), 
-            fake.street_address().replace("'", ''),
+            i, fake.name().replace("'", ' '), fake.email().replace("'", ' '), fake.phone_number().replace("'", ' '), 
+            fake.street_address().replace("'", ' '),
             None,
             dignite,
             random.choice(rangs)[0] if random.random() > 0.5 else None,
@@ -92,17 +96,17 @@ def generate_data() -> tuple:
     for i in range(1, NB_REPAS + 1):
         repas.append((
             i,
-            f"R-{i}, Festin {fake.word().replace("'", '')}", 
+            f"R-{i}, Festin {fake.word().replace("'", ' ')}", 
             fake.date_time_between(start_date='-2y', end_date='now'),
             random.choice(adresses)[0]
         ))
 
     est_createur = [(idm, idr[0]) for idm in chevaliers_ids for idr in repas]
 
-    participe = list(set([(random.choice(tenracs)[0], random.choice(repas)[0]) for _ in range(30)]))
+    participe = list(set([(random.choice(tenracs)[0], random.choice(repas)[0]) for _ in range(NB_PARTICIPE)]))
 
     # 6. Machines et Entretiens
-    machines = [(i, f"Machine-{fake.word().replace("'", '')}-{i}") for i in range(1, NB_MACHINES + 1)]
+    machines = [(i, f"Machine-{fake.word().replace("'", ' ')}-{i}") for i in range(1, NB_MACHINES + 1)]
     
     historique_entretiens = []
     for _ in range(NB_MACHINES * 2):
@@ -122,7 +126,7 @@ def generate_data() -> tuple:
         # 7 generation plats, sauces, ingredients, et leurs associations
     unique_plat = set()
     for _ in range(1000):
-        unique_plat.add(fakef.dish().replace("'", ''))
+        unique_plat.add(fakef.dish().replace("'", ' '))
         if len(unique_plat) >= 40:
             break
     plats = [(plat,) for plat in unique_plat]
@@ -279,6 +283,12 @@ def insert_sql(data, table, sql):
 
 if __name__ == "__main__":
     NB_TENRACS = eval(input("Number of tenrac: "))
+    NB_MACHINES = eval(input("Number of machine: "))
+    NB_REPAS = eval(input("Number of repas: "))
+    NB_TERRITOIRE = eval(input("Number of territoires: "))
+    NB_ORGANISME_ASSOCIE = eval(input("Number of organisme associe: "))
+    NB_ADRESSE = eval(input("Number of adresse: "))
+    NB_PARTICIPE = eval(input("Number of participe: "))
     a = time()
     print("--- GENERATION DATA STARTED ---")
     data = generate_data()
