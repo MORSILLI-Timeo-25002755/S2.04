@@ -181,35 +181,38 @@ def drop_tables():
     with oracledb.connect(user="SYSTEM", password=PASSWORD, host=HOST) as connection:
 
         with connection.cursor() as cursor:
-                cursor.execute("drop table GRADE cascade constraints")
-                cursor.execute("drop table RANG cascade constraints")
-                cursor.execute("drop table TITRE cascade constraints")
-                cursor.execute("drop table DIGNITE cascade constraints")
-                cursor.execute("drop table ORGANISME_ASSOCIE cascade constraints")
-                cursor.execute("drop table PLAT cascade constraints")
-                cursor.execute("drop table INGREDIENT cascade constraints")
-                cursor.execute("drop table SAUCE cascade constraints")
-                cursor.execute("drop table MACHINE cascade constraints")
-                cursor.execute("drop table TERRITOIRE cascade constraints")
-                cursor.execute("drop table MODELE cascade constraints")
-                cursor.execute("drop table ENTRETIEN cascade constraints")
-                cursor.execute("drop table ADRESSE cascade constraints")
-                cursor.execute("drop table REPAS cascade constraints")
-                cursor.execute("drop table ORGANISATION cascade constraints")
-                cursor.execute("drop table TENRAC cascade constraints")
-                cursor.execute("drop table ORDRE_DES_TENRACS cascade constraints")
-                cursor.execute("drop table CLUB_TENRAC cascade constraints")
-                cursor.execute("drop table EST_CREATEUR cascade constraints")
-                cursor.execute("drop table PARTICIPE cascade constraints")
-                cursor.execute("drop table COMBINEIS cascade constraints")
-                cursor.execute("drop table CONTIENT cascade constraints")
-                cursor.execute("drop table EST_ASSOCIE cascade constraints")
-                cursor.execute("drop table UTILISE cascade constraints")
-                cursor.execute("drop table ASSOCIE cascade constraints")
-                cursor.execute("drop table HISTORIQUE_ENTRETIEN cascade constraints")
-                cursor.execute("drop table COMBINESP cascade constraints")
-                cursor.execute("drop table COMBINEIP cascade constraints")
-                cursor.execute("drop table ADRESSE_PARTENAIRE cascade constraints")
+                cursor.executemany("BEGIN EXECUTE IMMEDIATE 'DROP TABLE ' || (:1); EXCEPTION WHEN OTHERS THEN IF SQLCODE != -942 THEN RAISE; END IF; END;", 
+                                   [
+                                        ("UTILISE",),
+                                        ("CONTIENT",),
+                                        ("COMBINESP",),
+                                        ("COMBINEIP",),
+                                        ("COMBINEIS",),
+                                        ("PARTICIPE",),
+                                        ("EST_CREATEUR",),
+                                        ("ADRESSE_PARTENAIRE",),
+                                        ("HISTORIQUE_ENTRETIEN",),
+                                        ("ASSOCIE",),
+                                        ("EST_ASSOCIE",),
+                                        ("SAUCE",),
+                                        ("INGREDIENT",),
+                                        ("PLAT",),
+                                        ("MODELE",),
+                                        ("ENTRETIEN",),
+                                        ("MACHINE",),
+                                        ("REPAS",),
+                                        ("ADRESSE",),
+                                        ("CLUB_TENRAC",),
+                                        ("ORDRE_DES_TENRACS",), 
+                                        ("TENRAC",),
+                                        ("ORGANISME_ASSOCIE",),
+                                        ("ORGANISATION",),
+                                        ("TERRITOIRE",),
+                                        ("TITRE",),
+                                        ("GRADE",),
+                                        ("RANG",),
+                                        ("DIGNITE",)
+                                    ])
                 for table in intentionSQL[0:len(intentionSQL)-1]:
                     cursor.execute(table)
 
