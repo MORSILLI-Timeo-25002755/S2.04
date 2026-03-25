@@ -5,6 +5,7 @@ from faker_food import FoodProvider
 from datetime import datetime
 import csv
 from time import time
+from os import mkdir, path
 
 fake = Faker(['fr_FR'])
 fakef = FoodProvider(fake)
@@ -257,12 +258,20 @@ def insert_oracle(data, table, sql):
         print("Finished " + table)
 
 def insert_csv(data, table, sql):
+
+    if not path.exists("csv"):
+        mkdir("csv")
+
     with open("csv/"+table+".csv", "w") as file:
         wr = csv.writer(file, quoting=csv.QUOTE_NONNUMERIC)
         wr.writerows(data)
     print("Finished", table)
 
 def insert_sql(data, table, sql):
+
+    if not path.exists("sql"):
+        mkdir('sql')
+
     insert = sql.split('(')[0]
     result = ""
     for element in data:
@@ -275,7 +284,7 @@ def insert_sql(data, table, sql):
             if i != len(element)-1:
                 result+=", "
         result+=')\n'
-    with open("data/" +table + ".sql", "w") as file:
+    with open("sql/" +table + ".sql", "w") as file:
         file.write(result)
     print("Finished", table)
 
