@@ -9,8 +9,9 @@ from time import time
 fake = Faker(['fr_FR'])
 fakef = FoodProvider(fake)
 
-HOST = "127.0.0.1"
-PASSWORD = "02022007"
+HOST = ""
+PASSWORD = ""
+USER = ""
 
 # --- CONFIGURATION ---
 NB_TENRACS = 10 # Ajustez pour atteindre le million total cumulé
@@ -245,7 +246,7 @@ def insert(insert, data):
 
 
 def insert_oracle(data, table, sql):
-    with oracledb.connect(user="SYSTEM", password=PASSWORD, host=HOST) as connection:
+    with oracledb.connect(user=USER, password=PASSWORD, host=HOST) as connection:
         with connection.cursor() as cursor:
             cursor.executemany(sql, 
                         data)
@@ -276,19 +277,26 @@ def insert_sql(data, table, sql):
     print("Finished", table)
 
 if __name__ == "__main__":
-    NB_TENRACS = eval(input("Nombre tenrac: "))
+    NB_TENRACS = eval(input("Number of tenrac: "))
     a = time()
-    print("--- DROP ALL TABLES AND RECREATE DATABASE SECONDS ---")
-    drop_tables()
-    print("--- DROP ALL TABLES AND RECREATE DATABASE FINISHED IN", round(time() - a) ,"SECONDS ")
-    print("--- GENERATION DATA STARTED ---")
-    b = time()
     data = generate_data()
-    print("--- GENERATION DATA FINISHED IN", round(time() - b),"SECONDS ---")
-    print("--- GENERATION ORACLE STARTED ---")
-    b = time()
-    insert(insert_oracle, data)
-    print("--- GENERATION ORACLE FINISHED IN", round(time() - b),"SECONDS ---")
+    print("--- GENERATION DATA FINISHED IN", round(time() - a),"SECONDS ---")
+    oracle = str(input("Do you have a oracle db ? (y/N) ")).lower()
+    
+    if oracle == 'y':
+        HOST = str(input("host of database: "))
+        USER = str(input("user of database: "))
+        PASSWORD = str(input("password of database: "))
+        b = time()
+        print("--- DROP ALL TABLES AND RECREATE DATABASE ---")
+        drop_tables()
+        print("--- DROP ALL TABLES AND RECREATE DATABASE FINISHED IN", round(time() - b) ,"SECONDS ")
+        print("--- GENERATION DATA STARTED ---")
+        print("--- GENERATION ORACLE STARTED ---")
+        b = time()
+        insert(insert_oracle, data)
+        print("--- GENERATION ORACLE FINISHED IN", round(time() - b),"SECONDS ---")
+
     print("--- GENERATION SQL STARTED ---")
     b = time()
     insert(insert_sql, data)
