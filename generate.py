@@ -45,10 +45,10 @@ def generate_data() -> tuple:
         'Grand croix': 0.03
     }
 
-    grades = list(distribution.keys())
+    grades_temp = list(distribution.keys())
     probas = list(distribution.values())
 
-    grades_list = np.random.choice(grades, size=NB_TENRACS, p=probas)
+    grades_list = np.random.choice(grades_temp, size=NB_TENRACS, p=probas)
 
     grades_list = grades_list.tolist()
 
@@ -61,7 +61,7 @@ def generate_data() -> tuple:
 
     entretiens = [(i, type_entretien[0], type_entretien[1]) for i, type_entretien in enumerate(types_entretien, start=1)]
 
-    # 1. Tables de Référence (Petites)
+    # 1. Tables de Référence
     
     # 2. Organismes et Territoires
     territoires = [(i, fake.region().replace("'", ' ')) for i in range(1, NB_TERRITOIRE + 1)]
@@ -89,9 +89,10 @@ def generate_data() -> tuple:
         id_o = random.choice(ordres)[0]
         id_a = random.choice(adresses)[0]
         uniques.add((id_o, id_a))
+
     adresses_partenaire = [(uniques[0], uniques[1]) for uniques in uniques]
 
-    # 4. Tenracs (Le gros volume)
+    # 4. Tenracs
     tenracs = []
     chevaliers_ids = []
     maitres_ids = []

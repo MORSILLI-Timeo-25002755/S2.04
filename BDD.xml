@@ -6,7 +6,11 @@
       <Name>Grade</Name>
       <Column>
          <Name>nom_grade</Name>
-         <Type>VARCHAR(50)</Type>
+         <Type>VARCHAR2(50) </Type>
+      </Column>
+      <Column>
+         <Name>niveau_hierarchique</Name>
+         <Type>NUMBER(10)</Type>
       </Column>
       <PK>
          <Key>nom_grade</Key>
@@ -16,7 +20,11 @@
       <Name>Rang</Name>
       <Column>
          <Name>nom_rang</Name>
-         <Type>VARCHAR(50)</Type>
+         <Type>VARCHAR2(50) </Type>
+      </Column>
+      <Column>
+         <Name>niveau_hierarchique</Name>
+         <Type>NUMBER(10)</Type>
       </Column>
       <PK>
          <Key>nom_rang</Key>
@@ -26,7 +34,11 @@
       <Name>Titre</Name>
       <Column>
          <Name>nom_titre</Name>
-         <Type>VARCHAR(50)</Type>
+         <Type>VARCHAR2(50) </Type>
+      </Column>
+      <Column>
+         <Name>niveau_hierarchique</Name>
+         <Type>NUMBER(10)</Type>
       </Column>
       <PK>
          <Key>nom_titre</Key>
@@ -36,7 +48,11 @@
       <Name>Dignite</Name>
       <Column>
          <Name>nom_dignite</Name>
-         <Type>VARCHAR(50)</Type>
+         <Type>VARCHAR2(50) </Type>
+      </Column>
+      <Column>
+         <Name>niveau_hierarchique</Name>
+         <Type>NUMBER(10)</Type>
       </Column>
       <PK>
          <Key>nom_dignite</Key>
@@ -46,11 +62,11 @@
       <Name>Organisme_associe</Name>
       <Column>
          <Name>siret</Name>
-         <Type>VARCHAR(50)</Type>
+         <Type>VARCHAR2(50) </Type>
       </Column>
       <Column>
          <Name>nom</Name>
-         <Type>VARCHAR(50)</Type>
+         <Type>VARCHAR2(50) </Type>
          <Property>NOT NULL</Property>
       </Column>
       <PK>
@@ -61,7 +77,7 @@
       <Name>Plat</Name>
       <Column>
          <Name>nom_plat</Name>
-         <Type>VARCHAR(50)</Type>
+         <Type>VARCHAR2(50) </Type>
       </Column>
       <PK>
          <Key>nom_plat</Key>
@@ -71,16 +87,16 @@
       <Name>Ingredient</Name>
       <Column>
          <Name>idI</Name>
-         <Type>INT</Type>
+         <Type>NUMBER(10)</Type>
       </Column>
       <Column>
          <Name>nom_ingredient</Name>
-         <Type>VARCHAR(50)</Type>
+         <Type>VARCHAR2(50) </Type>
          <Property>NOT NULL</Property>
       </Column>
       <Column>
          <Name>est_legume</Name>
-         <Type>LOGICAL</Type>
+         <Type>NUMBER(1)</Type>
          <Property>NOT NULL</Property>
       </Column>
       <PK>
@@ -91,21 +107,40 @@
       <Name>Sauce</Name>
       <Column>
          <Name>idS</Name>
-         <Type>INT</Type>
+         <Type>NUMBER(10)</Type>
+      </Column>
+      <Column>
+         <Name>nom</Name>
+         <Type>VARCHAR2(50) </Type>
       </Column>
       <PK>
          <Key>idS</Key>
       </PK>
    </Table>
    <Table>
+      <Name>Machine</Name>
+      <Column>
+         <Name>idM</Name>
+         <Type>NUMBER(10)</Type>
+      </Column>
+      <Column>
+         <Name>nom_machine</Name>
+         <Type>VARCHAR2(50) </Type>
+         <Property>NOT NULL</Property>
+      </Column>
+      <PK>
+         <Key>idM</Key>
+      </PK>
+   </Table>
+   <Table>
       <Name>Territoire</Name>
       <Column>
          <Name>idT</Name>
-         <Type>INT</Type>
+         <Type>NUMBER(10)</Type>
       </Column>
       <Column>
          <Name>nom_territoire</Name>
-         <Type>VARCHAR(50)</Type>
+         <Type>VARCHAR2(50) </Type>
          <Property>NOT NULL</Property>
       </Column>
       <PK>
@@ -116,7 +151,11 @@
       <Name>Modele</Name>
       <Column>
          <Name>nom_modele</Name>
-         <Type>VARCHAR(50)</Type>
+         <Type>VARCHAR2(50) </Type>
+      </Column>
+      <Column>
+         <Name>periode</Name>
+         <Type>VARCHAR2(50) </Type>
       </Column>
       <PK>
          <Key>nom_modele</Key>
@@ -126,16 +165,16 @@
       <Name>Entretien</Name>
       <Column>
          <Name>idEN</Name>
-         <Type>INT</Type>
+         <Type>NUMBER(10)</Type>
       </Column>
       <Column>
          <Name>periodicite_en_mois</Name>
-         <Type>VARCHAR(50)</Type>
+         <Type>VARCHAR2(50) </Type>
          <Property>NOT NULL</Property>
       </Column>
       <Column>
          <Name>type_entretien</Name>
-         <Type>VARCHAR(50)</Type>
+         <Type>VARCHAR2(50) </Type>
          <Property>NOT NULL</Property>
       </Column>
       <PK>
@@ -146,55 +185,74 @@
       <Name>Date_</Name>
       <Column>
          <Name>date_entretien</Name>
-         <Type>DATETIME</Type>
+         <Type>TIMESTAMP</Type>
       </Column>
       <PK>
          <Key>date_entretien</Key>
       </PK>
    </Table>
    <Table>
-      <Name>Machine</Name>
+      <Name>Adresse</Name>
       <Column>
-         <Name>idM</Name>
-         <Type>INT</Type>
+         <Name>idAdr</Name>
+         <Type>NUMBER(10)</Type>
       </Column>
       <Column>
-         <Name>nom_machine</Name>
-         <Type>VARCHAR(50)</Type>
+         <Name>adresse</Name>
+         <Type>VARCHAR2(50) </Type>
+      </Column>
+      <PK>
+         <Key>idAdr</Key>
+      </PK>
+   </Table>
+   <Table>
+      <Name>Repas</Name>
+      <Column>
+         <Name>idR</Name>
+         <Type>NUMBER(10)</Type>
+      </Column>
+      <Column>
+         <Name>intitule</Name>
+         <Type>VARCHAR2(50) </Type>
          <Property>NOT NULL</Property>
       </Column>
       <Column>
-         <Name>nom_modele</Name>
-         <Type>VARCHAR(50)</Type>
+         <Name>date_repas</Name>
+         <Type>TIMESTAMP</Type>
+         <Property>NOT NULL</Property>
+      </Column>
+      <Column>
+         <Name>idAdr</Name>
+         <Type>NUMBER(10)</Type>
          <Property>NOT NULL</Property>
       </Column>
       <PK>
-         <Key>idM</Key>
+         <Key>idR</Key>
       </PK>
       <FK>
-         <Key>nom_modele</Key>
-         <Reference>Modele(nom_modele)</Reference>
+         <Key>idAdr</Key>
+         <Reference>Adresse(idAdr)</Reference>
       </FK>
    </Table>
    <Table>
       <Name>Organisation</Name>
       <Column>
          <Name>idO</Name>
-         <Type>INT</Type>
+         <Type>NUMBER(10)</Type>
       </Column>
       <Column>
          <Name>nom_organisation</Name>
-         <Type>VARCHAR(50)</Type>
+         <Type>VARCHAR2(50) </Type>
          <Property>NOT NULL</Property>
       </Column>
       <Column>
          <Name>type</Name>
-         <Type>VARCHAR(50)</Type>
+         <Type>VARCHAR2(50) </Type>
          <Property>NOT NULL</Property>
       </Column>
       <Column>
          <Name>idT</Name>
-         <Type>INT</Type>
+         <Type>NUMBER(10)</Type>
       </Column>
       <PK>
          <Key>idO</Key>
@@ -208,57 +266,56 @@
       <Name>Tenrac</Name>
       <Column>
          <Name>idT</Name>
-         <Type>INT</Type>
+         <Type>NUMBER(10)</Type>
       </Column>
       <Column>
          <Name>nom</Name>
-         <Type>VARCHAR(50)</Type>
+         <Type>VARCHAR2(50) </Type>
          <Property>NOT NULL</Property>
       </Column>
       <Column>
          <Name>courriel</Name>
-         <Type>VARCHAR(50)</Type>
+         <Type>VARCHAR2(50) </Type>
          <Property>NOT NULL</Property>
       </Column>
       <Column>
          <Name>numero_de_telephone</Name>
-         <Type>VARCHAR(50)</Type>
+         <Type>VARCHAR2(50) </Type>
          <Property>NOT NULL</Property>
       </Column>
       <Column>
          <Name>adresse_postale</Name>
-         <Type>VARCHAR(50)</Type>
+         <Type>VARCHAR2(50) </Type>
          <Property>NOT NULL</Property>
       </Column>
       <Column>
-         <Name>organisme_associe</Name>
-         <Type>VARCHAR(50)</Type>
-         <Property>NOT NULL</Property>
+         <Name>code_personnel</Name>
+         <Type>VARCHAR2(50) </Type>
       </Column>
       <Column>
          <Name>nom_dignite</Name>
-         <Type>VARCHAR(50)</Type>
+         <Type>VARCHAR2(50) </Type>
       </Column>
       <Column>
          <Name>nom_rang</Name>
-         <Type>VARCHAR(50)</Type>
+         <Type>VARCHAR2(50) </Type>
       </Column>
       <Column>
          <Name>nom_grade</Name>
-         <Type>VARCHAR(50)</Type>
+         <Type>VARCHAR2(50) </Type>
          <Property>NOT NULL</Property>
       </Column>
       <Column>
          <Name>nom_titre</Name>
-         <Type>VARCHAR(50)</Type>
+         <Type>VARCHAR2(50) </Type>
       </Column>
       <Column>
          <Name>siret</Name>
-         <Type>VARCHAR(50)</Type>
+         <Type>VARCHAR2(50) </Type>
       </Column>
       <Column>
          <Name>idO</Name>
-         <Type>INT</Type>
+         <Type>NUMBER(10)</Type>
          <Property>NOT NULL</Property>
       </Column>
       <PK>
@@ -293,12 +350,7 @@
       <Name>Ordre_des_tenracs</Name>
       <Column>
          <Name>idO</Name>
-         <Type>INT</Type>
-      </Column>
-      <Column>
-         <Name>adresse_partenaire</Name>
-         <Type>VARCHAR(50)</Type>
-         <Property>NOT NULL</Property>
+         <Type>NUMBER(10)</Type>
       </Column>
       <PK>
          <Key>idO</Key>
@@ -309,43 +361,14 @@
       </FK>
    </Table>
    <Table>
-      <Name>Repas</Name>
-      <Column>
-         <Name>idR</Name>
-         <Type>VARCHAR(50)</Type>
-      </Column>
-      <Column>
-         <Name>intitule</Name>
-         <Type>VARCHAR(50)</Type>
-         <Property>NOT NULL</Property>
-      </Column>
-      <Column>
-         <Name>date_repas</Name>
-         <Type>DATETIME</Type>
-         <Property>NOT NULL</Property>
-      </Column>
-      <Column>
-         <Name>idO</Name>
-         <Type>INT</Type>
-         <Property>NOT NULL</Property>
-      </Column>
-      <PK>
-         <Key>idR</Key>
-      </PK>
-      <FK>
-         <Key>idO</Key>
-         <Reference>Ordre_des_tenracs(idO)</Reference>
-      </FK>
-   </Table>
-   <Table>
       <Name>Club_Tenrac</Name>
       <Column>
          <Name>idO_1</Name>
-         <Type>INT</Type>
+         <Type>NUMBER(10)</Type>
       </Column>
       <Column>
          <Name>idO</Name>
-         <Type>INT</Type>
+         <Type>NUMBER(10)</Type>
          <Property>NOT NULL</Property>
       </Column>
       <PK>
@@ -364,11 +387,11 @@
       <Name>Est_createur</Name>
       <Column>
          <Name>idT</Name>
-         <Type>INT</Type>
+         <Type>NUMBER(10)</Type>
       </Column>
       <Column>
          <Name>idR</Name>
-         <Type>VARCHAR(50)</Type>
+         <Type>NUMBER(10)</Type>
       </Column>
       <PK>
          <Key>idT, idR</Key>
@@ -386,11 +409,11 @@
       <Name>Participe</Name>
       <Column>
          <Name>idT</Name>
-         <Type>INT</Type>
+         <Type>NUMBER(10)</Type>
       </Column>
       <Column>
          <Name>idR</Name>
-         <Type>VARCHAR(50)</Type>
+         <Type>NUMBER(10)</Type>
       </Column>
       <PK>
          <Key>idT, idR</Key>
@@ -408,11 +431,11 @@
       <Name>CombineIS</Name>
       <Column>
          <Name>idI</Name>
-         <Type>INT</Type>
+         <Type>NUMBER(10)</Type>
       </Column>
       <Column>
          <Name>idS</Name>
-         <Type>INT</Type>
+         <Type>NUMBER(10)</Type>
       </Column>
       <PK>
          <Key>idI, idS</Key>
@@ -430,11 +453,11 @@
       <Name>Contient</Name>
       <Column>
          <Name>idR</Name>
-         <Type>VARCHAR(50)</Type>
+         <Type>NUMBER(10)</Type>
       </Column>
       <Column>
          <Name>nom_plat</Name>
-         <Type>VARCHAR(50)</Type>
+         <Type>VARCHAR2(50) </Type>
       </Column>
       <PK>
          <Key>idR, nom_plat</Key>
@@ -449,14 +472,36 @@
       </FK>
    </Table>
    <Table>
+      <Name>Est_associe</Name>
+      <Column>
+         <Name>idM</Name>
+         <Type>NUMBER(10)</Type>
+      </Column>
+      <Column>
+         <Name>nom_modele</Name>
+         <Type>VARCHAR2(50) </Type>
+      </Column>
+      <PK>
+         <Key>idM, nom_modele</Key>
+      </PK>
+      <FK>
+         <Key>idM</Key>
+         <Reference>Machine(idM)</Reference>
+      </FK>
+      <FK>
+         <Key>nom_modele</Key>
+         <Reference>Modele(nom_modele)</Reference>
+      </FK>
+   </Table>
+   <Table>
       <Name>Utilise</Name>
       <Column>
          <Name>idR</Name>
-         <Type>VARCHAR(50)</Type>
+         <Type>NUMBER(10)</Type>
       </Column>
       <Column>
          <Name>idM</Name>
-         <Type>INT</Type>
+         <Type>NUMBER(10)</Type>
       </Column>
       <PK>
          <Key>idR, idM</Key>
@@ -474,11 +519,11 @@
       <Name>Associe</Name>
       <Column>
          <Name>nom_modele</Name>
-         <Type>VARCHAR(50)</Type>
+         <Type>VARCHAR2(50) </Type>
       </Column>
       <Column>
          <Name>idEN</Name>
-         <Type>INT</Type>
+         <Type>NUMBER(10)</Type>
       </Column>
       <PK>
          <Key>nom_modele, idEN</Key>
@@ -496,19 +541,19 @@
       <Name>Historique_Entretien</Name>
       <Column>
          <Name>idM</Name>
-         <Type>INT</Type>
+         <Type>NUMBER(10)</Type>
       </Column>
       <Column>
          <Name>idO</Name>
-         <Type>INT</Type>
+         <Type>NUMBER(10)</Type>
       </Column>
       <Column>
          <Name>date_entretien</Name>
-         <Type>DATETIME</Type>
+         <Type>TIMESTAMP</Type>
       </Column>
       <Column>
          <Name>idT</Name>
-         <Type>INT</Type>
+         <Type>NUMBER(10)</Type>
          <Property>NOT NULL</Property>
       </Column>
       <PK>
@@ -535,11 +580,11 @@
       <Name>CombineSP</Name>
       <Column>
          <Name>nom_plat</Name>
-         <Type>VARCHAR(50)</Type>
+         <Type>VARCHAR2(50) </Type>
       </Column>
       <Column>
          <Name>idS</Name>
-         <Type>INT</Type>
+         <Type>NUMBER(10)</Type>
       </Column>
       <PK>
          <Key>nom_plat, idS</Key>
@@ -557,11 +602,11 @@
       <Name>CombineIP</Name>
       <Column>
          <Name>nom_plat</Name>
-         <Type>VARCHAR(50)</Type>
+         <Type>VARCHAR2(50) </Type>
       </Column>
       <Column>
          <Name>idI</Name>
-         <Type>INT</Type>
+         <Type>NUMBER(10)</Type>
       </Column>
       <PK>
          <Key>nom_plat, idI</Key>
@@ -573,6 +618,28 @@
       <FK>
          <Key>idI</Key>
          <Reference>Ingredient(idI)</Reference>
+      </FK>
+   </Table>
+   <Table>
+      <Name>Adresse_Partenaire</Name>
+      <Column>
+         <Name>idO</Name>
+         <Type>NUMBER(10)</Type>
+      </Column>
+      <Column>
+         <Name>idAdr</Name>
+         <Type>NUMBER(10)</Type>
+      </Column>
+      <PK>
+         <Key>idO, idAdr</Key>
+      </PK>
+      <FK>
+         <Key>idO</Key>
+         <Reference>Ordre_des_tenracs(idO)</Reference>
+      </FK>
+      <FK>
+         <Key>idAdr</Key>
+         <Reference>Adresse(idAdr)</Reference>
       </FK>
    </Table>
 </Database>
