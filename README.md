@@ -13,7 +13,7 @@ source .venv/bin/activate
 ## Installer les dépendances
 
 ```bash
-pip install oracledb faker fakerfood numpy
+pip install -r requirement.txt
 ```
 
 ## Lancer le script

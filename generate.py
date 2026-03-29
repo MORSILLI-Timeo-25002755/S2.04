@@ -70,10 +70,14 @@ def generate_data() -> tuple:
 
     # 3. Organisations, Ordre et Clubs
     organisations = []
+
     for i in range(1, NB_ORDRE + 1):
-        organisations.append((i, f"L Ordre du Tenrac {fake.name().replace("'", ' ')}", "Ordre", random.randint(1, NB_TERRITOIRE)))
+        cleanName = fake.name().replace("'", ' ')
+        organisations.append((i, f"L Ordre du Tenrac {cleanName}", "Ordre", random.randint(1, NB_TERRITOIRE)))
+
     for i in range(NB_ORDRE + 1, NB_CLUB + NB_ORDRE + 1):
-        organisations.append((i, f"Club Tenrac {fake.city().replace("'", ' ')}", "Club", random.randint(1, NB_TERRITOIRE)))
+        cleanCity = fake.city().replace("'", ' ')
+        organisations.append((i, f"Club Tenrac {cleanCity}", "Club", random.randint(1, NB_TERRITOIRE)))
 
     values = np.random.rand(len(organisations))
     probas = values / values.sum()
@@ -122,9 +126,10 @@ def generate_data() -> tuple:
     # 5. Repas
     repas = []
     for i in range(1, NB_REPAS + 1):
+        cleanWord = fake.word().replace("'", ' ')
         repas.append((
             i,
-            f"R-{i}, Festin {fake.word().replace("'", ' ')}", 
+            f"R-{i}, Festin {cleanWord}", 
             fake.date_time_between(start_date='-2y', end_date='now'),
             random.choice(adresses)[0]
         ))
@@ -134,7 +139,8 @@ def generate_data() -> tuple:
     participe = list(set([(random.choice(tenracs)[0], random.choice(repas)[0]) for _ in range(NB_PARTICIPE)]))
 
     # 6. Machines et Entretiens
-    machines = [(i, f"Machine-{fake.word().replace("'", ' ')}-{i}") for i in range(1, NB_MACHINES + 1)]
+    cleanMachineWord = fake.word().replace("'", ' ')
+    machines = [(i, f"Machine-{cleanMachineWord}-{i}") for i in range(1, NB_MACHINES + 1)]
     
     historique_entretiens = []
     for _ in range(NB_MACHINES * 2):
