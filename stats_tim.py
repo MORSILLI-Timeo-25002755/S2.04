@@ -1,5 +1,8 @@
 import pandas as pd
 from matplotlib import pyplot as plt
+import matplotlib as mat
+
+mat.use("TkAgg")
 
 # =====================================================================
 # 1. CHARGEMENT DES DONNÉES
@@ -9,6 +12,7 @@ club = pd.read_csv("csv/Club des Tenracs.csv", header=None)
 tenracs = pd.read_csv("csv/Tenracs.csv", header=None)
 repas = pd.read_csv("csv/Repas.csv", header=None)
 participe = pd.read_csv("csv/Participe.csv", header=None)
+territoire = pd.read_csv("csv/Territoire.csv", header=None)
 
 # Nouveaux CSV nécessaires pour la requête sur les légumes
 contient = pd.read_csv("csv/Contient.csv", header=None)
@@ -24,6 +28,9 @@ organisation = organisation.rename(columns={0: "IDO", 1: "NOM_ORGANISATION"})
 club = club.rename(columns={0: "IDO_1"})
 repas = repas.rename(columns={0: "idR", 2: "date_repas", 1: "intitule"})
 participe = participe.rename(columns={0: "idT", 1: "idR"})
+territoire = territoire.rename(columns={0: "idT_territoire", 1: "nom_territoire"})
+organisation_full = pd.read_csv("csv/Organisation.csv", header=None)
+organisation_full = organisation_full.rename(columns={0: "IDO", 1: "NOM_ORGANISATION", 2: "TYPE", 3: "idT_territoire"})
 
 # --- Renommage validé selon le schéma SQL fourni ---
 contient = contient.rename(columns={0: "idR", 1: "NOM_PLAT"})
@@ -133,5 +140,31 @@ ax4.set_title("Top 10 des Plats les plus souvent servis", fontsize=14, fontweigh
 ax4.set_xlabel("Nombre d'apparitions dans les repas", fontsize=12)
 ax4.set_ylabel("Nom du Plat", fontsize=12)
 
+plt.tight_layout()
+plt.show()
+
+# =====================================================================
+# FIGURE 3 : Nombre de repas par territoire
+# =====================================================================
+
+df_terr = participe.merge(tenracs[["idT", "IDO"]], on="idT")
+df_terr = df_terr.merge(organisation_full[["IDO", "idT_territoire"]], on="IDO")
+df_terr = df_terr.merge(territoire, on="idT_territoire")
+
+result_terr = df_terr.groupby("nom_territoire")["idR"].nunique().reset_index()
+result_terr = result_terr.rename(columns={"idR": "NB_REPAS"})
+result_terr = result_terr.sort_values(by="NB_REPAS", ascending=False)
+
+fig3, ax5 = plt.subplots(figsize=(10, 6))
+
+bars = ax5.bar(result_terr["nom_territoire"], result_terr["NB_REPAS"],
+               color="#1F77B4", edgecolor="black", alpha=0.85, zorder=3)
+
+ax5.grid(True, axis="y", linestyle="--", alpha=0.6, zorder=0)
+ax5.set_title("Nombre de repas par Territoire", fontsize=14, fontweight="bold")
+ax5.set_xlabel("Territoire", fontsize=12)
+ax5.set_ylabel("Nombre de repas distincts", fontsize=12)
+ax5.set_ylim(0, result_terr["NB_REPAS"].max() * 1.15)
+plt.xticks(rotation=30, ha="right")
 plt.tight_layout()
 plt.show()
