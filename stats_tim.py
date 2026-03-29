@@ -2,8 +2,6 @@ import pandas as pd
 from matplotlib import pyplot as plt
 import matplotlib as mat
 
-mat.use("TkAgg")
-
 # =====================================================================
 # 1. CHARGEMENT DES DONNÉES
 # =====================================================================

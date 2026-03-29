@@ -97,7 +97,7 @@ CREATE TABLE Organisation(
 
 CREATE TABLE Tenrac(
    idT NUMBER(10),
-   nom VARCHAR2(50)  NOT NULL,
+   nom VARCHAR2(50) NOT NULL,
    courriel VARCHAR2(50)  NOT NULL,
    numero_de_telephone VARCHAR2(50)  NOT NULL,
    adresse_postale VARCHAR2(50),
